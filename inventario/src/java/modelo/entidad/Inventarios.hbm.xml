@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2025 6:06:55 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="modelo.entidad.Inventarios" table="inventarios" catalog="control" optimistic-lock="version">
+        <id name="idInventarios" type="java.lang.Integer">
+            <column name="idInventarios" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="area" class="modelo.entidad.Area" fetch="select">
+            <column name="idArea" />
+        </many-to-one>
+        <many-to-one name="usuarios" class="modelo.entidad.Usuarios" fetch="select">
+            <column name="idUsuarios" />
+        </many-to-one>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="19" not-null="true" />
+        </property>
+        <property name="nombreProducto" type="string">
+            <column name="nombreProducto" length="200" not-null="true" />
+        </property>
+        <property name="cantidad" type="java.lang.Double">
+            <column name="cantidad" precision="22" scale="0" />
+        </property>
+        <property name="peso" type="java.lang.Double">
+            <column name="peso" precision="22" scale="0" />
+        </property>
+        <property name="precio" type="java.lang.Double">
+            <column name="precio" precision="22" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>MSQM - Login</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            background-color: #8B4513;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            position: relative;
+        }
+
+        .logo::before {
+            content: "\1F920";
+            font-size: 36px;
+            position: absolute;
+            top: -30px;
+            left: calc(50% - 18px);
+        }
+
+        .login-container {
+            background-color: rgba(68, 26, 13, 0.8);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .login-form label {
+            color: #fff;
+            align-self: flex-start;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 3px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .login-form .ui-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #461d10;
+            padding: 10px 15px;
+            border: 2px solid #461d10;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .login-form .ui-button:hover {
+            background-color: #461d10;
+            color: #fff;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="login-wrapper">
+        <div class="logo">Inventory</div>
+        <div class="login-container">
+            <h2>Enter Your Credentials</h2>
+            <h:form>
+                <p:growl id="messages" showDetail="true" />
+                <div class="login-form">
+                    <h:outputLabel for="username" value="User:" />
+                    <p:inputText id="username" value="#{loginControl.usuario.usuario}" />
+
+                    <h:outputLabel for="password" value="Password:" />
+                    <p:password id="password" value="#{loginControl.usuario.clave}" />
+
+                    <p:commandButton value="Login"
+                 action="#{loginControl.login()}"
+                 ajax="false"
+                 styleClass="ui-button ui-widget" />
+
+                </div>
+            </h:form>
+        </div>
+    </div>
+</h:body>
+</html>

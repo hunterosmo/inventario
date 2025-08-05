@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 23, 2025 6:06:55 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="modelo.entidad.Usuarios" table="usuarios" catalog="control" optimistic-lock="version">
+        <id name="idUsuarios" type="java.lang.Integer">
+            <column name="idUsuarios" />
+            <generator class="identity" />
+        </id>
+        <property name="usuario" type="string">
+            <column name="usuario" length="45" not-null="true" />
+        </property>
+        <property name="clave" type="string">
+            <column name="clave" length="45" not-null="true" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" />
+        </property>
+        <property name="correo" type="string">
+            <column name="correo" length="100" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="45" />
+        </property>
+        <property name="rol" type="string">
+            <column name="rol" length="20" />
+        </property>
+        <set name="inventarioses" table="inventarios" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idUsuarios" />
+            </key>
+            <one-to-many class="modelo.entidad.Inventarios" />
+        </set>
+    </class>
+</hibernate-mapping>

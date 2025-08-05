@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title><ui:insert name="title">MSQM Inventory</ui:insert></title>
+
+    <!-- ✅ Mejora de compatibilidad general -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- ✅ PrimeIcons -->
+    <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+
+    <!-- ✅ Estilos -->
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+        }
+        .sidebar {
+            width: 70px;
+            background-color: #2c3e50;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 40px;
+            position: fixed;
+        }
+        .sidebar .icon-wrapper {
+            margin: 35px 0;
+        }
+        .sidebar i {
+            color: white;
+            font-size: 28px;
+        }
+        .sidebar .active-icon {
+            background-color: #1abc9c;
+            border-radius: 50%;
+            padding: 10px;
+        }
+        .main-content {
+            margin-left: 70px;
+            padding: 30px;
+            width: calc(100% - 70px);
+        }
+    </style>
+</h:head>
+
+<h:body>
+
+    <!-- Sidebar navigation -->
+    <div class="sidebar">
+        <h:form>
+            <div class="icon-wrapper">
+                <p:commandLink action="dashboard.xhtml?faces-redirect=true" title="Dashboard">
+                    <i class="pi pi-home"></i>
+                </p:commandLink>
+            </div>
+            <div class="icon-wrapper">
+                <p:commandLink action="inventario.xhtml?faces-redirect=true" title="Inventory">
+                    <i class="pi pi-book"></i>
+                </p:commandLink>
+            </div>
+            <div class="icon-wrapper">
+                <p:commandLink action="areas.xhtml?faces-redirect=true" title="Areas">
+                    <i class="pi pi-sitemap"></i>
+                </p:commandLink>
+            </div>
+            <div class="icon-wrapper">
+                <p:commandLink action="usuarios.xhtml?faces-redirect=true" title="Users">
+                    <i class="pi pi-users"></i>
+                </p:commandLink>
+            </div>
+            <div class="icon-wrapper">
+                <p:commandLink action="#{loginControl.cerrarSession()}" title="Log Out">
+                    <i class="pi pi-sign-out"></i>
+                </p:commandLink>
+            </div>
+        </h:form>
+    </div>
+
+    <!-- Main dynamic content -->
+    <div class="main-content">
+        <ui:insert name="content" />
+    </div>
+
+</h:body>
+</html>

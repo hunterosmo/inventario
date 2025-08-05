@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./../plantillas/admin.xhtml">
+
+    <ui:define name="title">
+        User Management
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formUsuarios">
+            <p:growl id="msgs" showDetail="true"/>
+
+            <p:commandButton value="New User" icon="pi pi-plus"
+                             actionListener="#{usuarioControl.limpiarUsuario}"
+                             update=":formDialog"
+                             oncomplete="PF('dialogUsuario').show()" />
+
+            <p:dataTable value="#{usuarioControl.listaUsuarios}" var="u"
+                         selectionMode="single" selection="#{usuarioControl.usuario}"
+                         rowKey="#{u.idUsuarios}" style="margin-top:20px"
+                         emptyMessage="No records found">
+                <p:column headerText="Username">
+                    <h:outputText value="#{u.usuario}" />
+                </p:column>
+                <p:column headerText="Name">
+                    <h:outputText value="#{u.nombre}" />
+                </p:column>
+                <p:column headerText="Email">
+                    <h:outputText value="#{u.correo}" />
+                </p:column>
+                <p:column headerText="Phone">
+                    <h:outputText value="#{u.telefono}" />
+                </p:column>
+                <p:column headerText="Role">
+                    <h:outputText value="#{u.rol}" />
+                </p:column>
+                <p:column headerText="Actions">
+                    <p:commandButton icon="pi pi-pencil" title="Edit"
+                                     actionListener="#{usuarioControl.setUsuario(u)}"
+                                     update=":formDialog"
+                                     oncomplete="PF('dialogUsuario').show()" />
+                    <p:commandButton icon="pi pi-key" title="Change Password"
+                                     actionListener="#{usuarioControl.setUsuario(u)}"
+                                     update=":formClave"
+                                     oncomplete="PF('dialogClave').show()" />
+                    <p:commandButton icon="pi pi-trash" title="Delete" styleClass="ui-button-danger"
+                                     actionListener="#{usuarioControl.setUsuario(u)}"
+                                     oncomplete="PF('confirmarEliminar').show()" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <!-- Dialog User -->
+        <p:dialog header="User" modal="true" widgetVar="dialogUsuario" resizable="false">
+            <h:form id="formDialog">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="usuario" value="Username:"/>
+                    <p:inputText id="usuario" value="#{usuarioControl.usuario.usuario}" required="true" />
+
+                    <h:outputLabel for="clave" value="Password:" rendered="#{usuarioControl.usuario.idUsuarios == null}" />
+                    <p:password id="clave" value="#{usuarioControl.usuario.clave}" required="true"
+                                rendered="#{usuarioControl.usuario.idUsuarios == null}" />
+
+                    <h:outputLabel for="nombre" value="Name:"/>
+                    <p:inputText id="nombre" value="#{usuarioControl.usuario.nombre}" required="true" />
+
+                    <h:outputLabel for="correo" value="Email:"/>
+                    <p:inputText id="correo" value="#{usuarioControl.usuario.correo}" required="true" />
+
+                    <h:outputLabel for="telefono" value="Phone:"/>
+                    <p:inputText id="telefono" value="#{usuarioControl.usuario.telefono}" required="true" />
+
+                    <h:outputLabel for="rol" value="Role:"/>
+                    <p:selectOneMenu id="rol" value="#{usuarioControl.usuario.rol}" required="true">
+                        <f:selectItem itemLabel="Select" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="admin" itemValue="admin"/>
+                        <f:selectItem itemLabel="visitante" itemValue="visitante"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <p:separator />
+                <p:commandButton value="Save" icon="pi pi-save"
+                                 rendered="#{usuarioControl.usuario.idUsuarios == null}"
+                                 actionListener="#{usuarioControl.agregarUsuario}"
+                                 update=":formUsuarios :formDialog"
+                                 oncomplete="PF('dialogUsuario').hide()" />
+
+                <p:commandButton value="Update" icon="pi pi-refresh"
+                                 rendered="#{usuarioControl.usuario.idUsuarios != null}"
+                                 actionListener="#{usuarioControl.modificarUsuario}"
+                                 update=":formUsuarios :formDialog"
+                                 oncomplete="PF('dialogUsuario').hide()" />
+            </h:form>
+        </p:dialog>
+
+        <!-- Dialog Password -->
+        <p:dialog header="Change Password" modal="true" widgetVar="dialogClave" resizable="false">
+    <h:form id="formClave">
+        <h:panelGrid columns="2">
+            <h:outputLabel for="nuevaClave" value="New Password:"/>
+            <p:password id="nuevaClave" value="#{usuarioControl.usuario.clave}" required="true" />
+        </h:panelGrid>
+        <p:separator />
+        <p:commandButton value="Update Password" icon="pi pi-lock"
+                         actionListener="#{usuarioControl.cambiarClave}"
+                         update=":formUsuarios"
+                         oncomplete="PF('dialogClave').hide()" />
+    </h:form>
+</p:dialog>
+
+        <!-- Confirm Delete -->
+        <p:confirmDialog header="Confirm" widgetVar="confirmarEliminar"
+                         message="Are you sure you want to delete this user?"
+                         showEffect="fade" hideEffect="fade">
+            <h:form>
+                <p:commandButton value="Yes" icon="pi pi-check"
+                                 actionListener="#{usuarioControl.eliminarUsuario}"
+                                 update=":formUsuarios"
+                                 oncomplete="PF('confirmarEliminar').hide()" />
+                <p:commandButton value="No" icon="pi pi-times"
+                                 onclick="PF('confirmarEliminar').hide()" type="button" />
+            </h:form>
+        </p:confirmDialog>
+    </ui:define>
+</ui:composition>

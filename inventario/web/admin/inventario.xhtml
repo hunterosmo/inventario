@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./../plantillas/admin.xhtml">
+
+    <ui:define name="title">
+        Inventory Management
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formInventario">
+            <p:growl id="mensajes" showDetail="true"/>
+
+            <p:commandButton value="New Product" icon="pi pi-plus"
+                             actionListener="#{inventarioControl.limpiarFormulario}"
+                             update=":formAgregar"
+                             oncomplete="PF('dialogAgregar').show()" />
+
+            <!-- Filters -->
+            <h:panelGrid columns="6" style="margin: 20px 0;">
+                <p:inputText value="#{inventarioControl.palabraBusqueda}" placeholder="Search by product"/>
+                <p:calendar value="#{inventarioControl.fechaBusqueda}" pattern="yyyy-MM-dd"
+                            placeholder="Search by date" showButtonPanel="true" showOn="button"/>
+                <p:selectOneMenu value="#{inventarioControl.idAreaBusqueda}">
+                    <f:selectItem itemLabel="All areas" itemValue="#{null}" noSelectionOption="true"/>
+                    <f:selectItems value="#{inventarioControl.listaAreas}" var="a"
+                                   itemLabel="#{a.nombre}" itemValue="#{a.idArea}"/>
+                </p:selectOneMenu>
+                <p:commandButton value="Search" icon="pi pi-search"
+                                 actionListener="#{inventarioControl.buscarInventarios}"
+                                 update="formInventario"/>
+                <p:commandButton value="Clear Search" icon="pi pi-times"
+                                 actionListener="#{inventarioControl.limpiarBusqueda}"
+                                 update="formInventario"/>
+                <p:commandButton value="Export to PDF" icon="pi pi-file-pdf"
+                                 actionListener="#{inventarioControl.exportarPdf}"
+                                 ajax="false" style="margin-left:10px;" />
+            </h:panelGrid>
+
+            <!-- Table -->
+            <p:dataTable value="#{inventarioControl.listaInventarios}" var="inv"
+                         paginator="true" rows="6" emptyMessage="No records found"
+                         rowKey="#{inv.idInventarios}" selectionMode="single"
+                         selection="#{inventarioControl.inventario}">
+                <p:column headerText="Date">
+                    <h:outputText value="#{inv.fecha}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Product">
+                    <h:outputText value="#{inv.nombreProducto}"/>
+                </p:column>
+                <p:column headerText="Area">
+                    <h:outputText value="#{inv.area.nombre}"/>
+                </p:column>
+                <p:column headerText="Quantity">
+                    <h:outputText value="#{inv.cantidad}"/>
+                </p:column>
+                <p:column headerText="Weight">
+                    <h:outputText value="#{inv.peso}"/>
+                </p:column>
+                <p:column headerText="Price">
+                    <h:outputText value="#{inv.precio}">
+                        <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="2"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Total Value">
+                    <h:outputText value="#{inv.cantidad * inv.peso * inv.precio}">
+                        <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="2"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Total Weight">
+                    <h:outputText value="#{inv.cantidad * inv.peso}" />
+                </p:column>
+                <p:column headerText="Actions">
+                    <p:commandButton icon="pi pi-pencil" title="Edit"
+                                     actionListener="#{inventarioControl.setInventario(inv)}"
+                                     update=":formEditar"
+                                     oncomplete="PF('dialogEditar').show()" />
+                    <p:commandButton icon="pi pi-trash" title="Delete"
+                                     actionListener="#{inventarioControl.setInventario(inv)}"
+                                     oncomplete="PF('confirmarEliminar').show()" />
+                </p:column>
+            </p:dataTable>
+
+            <!-- Totals -->
+            <p:panel style="margin-top:20px;">
+                <h:outputLabel value="Total Inventory Value: " style="font-size:16px; font-weight:bold; color:#2c3e50;" />
+                <h:outputText value="#{inventarioControl.valorTotalInventario}" style="font-size:18px; font-weight:bold;">
+                    <f:convertNumber type="currency" currencySymbol="$" maxFractionDigits="2"/>
+                </h:outputText>
+            </p:panel>
+
+            <p:panel style="margin-top:20px;">
+                <h:outputLabel value="Total Inventory Weight: " style="font-size:16px; font-weight:bold; color:#2c3e50;" />
+                <h:outputText value="#{inventarioControl.pesoTotalInventario}" style="font-size:18px; font-weight:bold;" />
+            </p:panel>
+        </h:form>
+
+        <!-- Add Dialog -->
+        <p:dialog header="New Product" modal="true" widgetVar="dialogAgregar" resizable="false">
+            <h:form id="formAgregar">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="fechaA" value="Date:"/>
+                    <p:calendar id="fechaA" value="#{inventarioControl.inventario.fecha}" pattern="yyyy-MM-dd" required="true" showOn="button"/>
+                    <h:outputLabel for="productoA" value="Product Name:"/>
+                    <p:inputText id="productoA" value="#{inventarioControl.inventario.nombreProducto}" required="true"/>
+                    <h:outputLabel for="areaA" value="Area:"/>
+                    <p:selectOneMenu id="areaA" value="#{inventarioControl.inventario.area.idArea}" required="true">
+                        <f:selectItem itemLabel="Select" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{inventarioControl.listaAreas}" var="a"
+                                       itemLabel="#{a.nombre}" itemValue="#{a.idArea}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel for="cantidadA" value="Quantity:"/>
+                    <p:inputText id="cantidadA" value="#{inventarioControl.inventario.cantidad}" required="true"/>
+                    <h:outputLabel for="pesoA" value="Weight:"/>
+                    <p:inputText id="pesoA" value="#{inventarioControl.inventario.peso}" required="true"/>
+                    <h:outputLabel for="precioA" value="Price:"/>
+                    <p:inputText id="precioA" value="#{inventarioControl.inventario.precio}" required="true"/>
+                </h:panelGrid>
+                <p:commandButton value="Save" icon="pi pi-save"
+                                 actionListener="#{inventarioControl.agregarInventario}"
+                                 update=":formInventario :formAgregar"
+                                 oncomplete="PF('dialogAgregar').hide()" />
+            </h:form>
+        </p:dialog>
+
+        <!-- Edit Dialog -->
+        <p:dialog header="Edit Product" modal="true" widgetVar="dialogEditar" resizable="false">
+            <h:form id="formEditar">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="fechaE" value="Date:"/>
+                    <p:calendar id="fechaE" value="#{inventarioControl.inventario.fecha}" pattern="yyyy-MM-dd" required="true" showOn="button"/>
+                    <h:outputLabel for="productoE" value="Product Name:"/>
+                    <p:inputText id="productoE" value="#{inventarioControl.inventario.nombreProducto}" required="true"/>
+                    <h:outputLabel for="areaE" value="Area:"/>
+                    <p:selectOneMenu id="areaE" value="#{inventarioControl.inventario.area.idArea}" required="true">
+                        <f:selectItem itemLabel="Select" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{inventarioControl.listaAreas}" var="a"
+                                       itemLabel="#{a.nombre}" itemValue="#{a.idArea}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel for="cantidadE" value="Quantity:"/>
+                    <p:inputText id="cantidadE" value="#{inventarioControl.inventario.cantidad}" required="true"/>
+                    <h:outputLabel for="pesoE" value="Weight:"/>
+                    <p:inputText id="pesoE" value="#{inventarioControl.inventario.peso}" required="true"/>
+                    <h:outputLabel for="precioE" value="Price:"/>
+                    <p:inputText id="precioE" value="#{inventarioControl.inventario.precio}" required="true"/>
+                </h:panelGrid>
+                <p:commandButton value="Update" icon="pi pi-refresh"
+                                 actionListener="#{inventarioControl.modificarInventario}"
+                                 update=":formInventario :formEditar"
+                                 oncomplete="PF('dialogEditar').hide()" />
+            </h:form>
+        </p:dialog>
+
+        <!-- Confirm Delete -->
+        <p:confirmDialog header="Confirm" widgetVar="confirmarEliminar"
+                         message="Are you sure you want to delete this product?" showEffect="fade" hideEffect="fade">
+            <h:form>
+                <p:commandButton value="Yes" icon="pi pi-check"
+                                 actionListener="#{inventarioControl.eliminarInventario}"
+                                 update=":formInventario"
+                                 oncomplete="PF('confirmarEliminar').hide()" />
+                <p:commandButton value="No" icon="pi pi-times"
+                                 onclick="PF('confirmarEliminar').hide()" type="button" />
+            </h:form>
+        </p:confirmDialog>
+    </ui:define>
+
+</ui:composition>
