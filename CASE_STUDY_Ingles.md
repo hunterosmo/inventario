@@ -1,17 +1,17 @@
 # Case Study: Inventory Management System
 
 > **Professional portfolio document**
-> This case study describes the context, technical decisions, and lessons learned behind the system available in this repository. Company name, specific products, and supplier names have been anonymized; the architecture and technical decisions are real.
+> This case study describes the context, technical decisions, and lessons learned behind the system available in this repository. Company name, specific products, and category names have been anonymized; the architecture and technical decisions are real.
 
 ---
 
 ## Executive Summary
 
-I designed and built a web-based inventory management system for a **consumer goods distributor** (operating in the United States). The system replaced manual paper-based processes and informal spreadsheets with a centralized application featuring user roles, area-based stock control, advanced search, and PDF reporting.
+I designed and built a web-based inventory management system for a **consumer goods distributor** in the United States. The system replaced manual paper-based processes and informal spreadsheets with a centralized application featuring user roles, area-based stock control, advanced search, and PDF reporting.
 
 **Tech stack:** Java 8, JSF 2.2, Hibernate 4.3, PrimeFaces 6.0, MySQL, GlassFish 4.1.1.
 
-**My role:** Sole developer. Requirements analysis, database design, architecture, implementation, deployment.
+**My role:** Sole developer. Requirements analysis, database design, architecture, implementation, deployment, and maintenance over 3+ years.
 
 ---
 
@@ -36,7 +36,7 @@ These physical changes were a prerequisite for the digital system to work well �
 
 ## Process
 
-### Analysis & Design (weeks 1-3)
+### Analysis & Design
 
 Before writing any code, I interviewed the people who would actually use the system: whoever does the counts, whoever enters data, whoever reviews reports, whoever makes purchasing decisions. From this came the real requirements:
 
@@ -62,7 +62,7 @@ At the time I was finishing my Computer Systems Engineering degree, and JSF/Hibe
 Three main entities:
 
 - **`Usuarios`** (Users) — authentication, contact info, role (`admin` / `visitor`)
-- **`Area`** — functional categories (dry goods, cleaning, liquids, etc.)
+- **`Area`** — functional categories
 - **`Inventarios`** (Inventory records) — the central record, with date, product, area, quantity, weight, price, and reference to the user who created it
 
 The foreign keys from `Inventarios` point to `Area` and `Usuarios`, giving traceability: who recorded what and where. Each record has its own timestamp, allowing historical reconstruction.
@@ -101,20 +101,6 @@ The system wasn't built in one go. It started as a simple MVP (basic CRUD, authe
 
 ---
 
-## Current State & Next Steps
-
-This system (Java/JSF) was the first version. I later designed a **second generation** with significant improvements:
-
-- Finer-grained roles (admin, suppliers with views limited to their own products, areas/rooms with views limited to their section)
-- Stock status indicator system (critical / low / OK) with configurable thresholds and different rules per area type (storage areas by quantity + weight, processing rooms by weight only)
-- Date-based data versioning: editing with a new date creates a new historical version rather than overwriting
-- Full audit trail with mandatory reason for every change
-- Time-based filters by week, month, and specific day
-
-That second iteration is documented in a separate repository.
-
----
-
 ## Methodology & Tools
 
 I want to be transparent about how I worked on this project, because I think it matters for understanding what my real contribution was:
@@ -142,6 +128,4 @@ If you're interested in this project and want to see a live demo or review the c
 | IDE | NetBeans | 8.2 |
 
 ---
-
-
 
