@@ -6,6 +6,8 @@ Construido con **Java 8 · JSF 2.2 · Hibernate 4.3 · MySQL · GlassFish**, con
 > 📖 **Lee el caso de estudio completo:** [Español](https://github.com/hunterosmo/inventario/blob/main/CASE_STUDY%20Espanol.md) · [English](https://github.com/hunterosmo/inventario/blob/main/CASE_STUDY_Ingles.md)
 > Contiene el contexto del problema, las decisiones técnicas y las lecciones aprendidas.
 
+> 🔒 **Nota sobre los datos:** Este repositorio contiene una versión sanitizada del sistema. Los nombres reales de la empresa, productos y categorías han sido reemplazados por equivalentes genéricos (ej. *abarrote*, *detergentes*, *líquidos*). La arquitectura, decisiones técnicas y el código son los del sistema real en producción.
+
 ---
 
 ## 🚀 Características Principales
@@ -18,14 +20,15 @@ Construido con **Java 8 · JSF 2.2 · Hibernate 4.3 · MySQL · GlassFish**, con
 
 ### 📦 Gestión de Inventario
 - Registro de productos por áreas/categorías
-- Control de cantidades, pesos y precios
+- Control de cantidades, pesos y precios unitarios
 - Cálculo automático de valor total y peso total
 - Búsqueda y filtrado avanzado (por producto, fecha, área)
 - Exportación de reportes a PDF
 
 ### 🏢 Gestión de Áreas
-- Categorización funcional de productos (abarrote, detergentes, líquidos, etc.)
-- CRUD completo
+- Categorización funcional de productos
+- CRUD completo de áreas
+- Foreign keys que vinculan cada producto con su área correspondiente
 
 ### 📊 Dashboard y Reportes
 - Vista general del inventario en tiempo real
@@ -36,17 +39,32 @@ Construido con **Java 8 · JSF 2.2 · Hibernate 4.3 · MySQL · GlassFish**, con
 
 ## 🛠️ Stack Técnico
 
-| Capa | Tecnología |
+### Backend
+
+| Tecnología | Versión | Propósito |
+|---|---|---|
+| Java | 8+ | Lenguaje principal |
+| JSF | 2.2 | Framework web MVC |
+| Hibernate | 4.3.x | ORM para persistencia |
+| BCrypt | — | Hashing de contraseñas |
+| C3P0 | — | Pool de conexiones |
+
+### Frontend
+
+| Tecnología | Versión | Propósito |
+|---|---|---|
+| PrimeFaces | 6.0 | Componentes UI |
+| XHTML | — | Templates y vistas JSF |
+| CSS3 | — | Estilos personalizados |
+| Bootstrap | — | Framework CSS (parcial) |
+
+### Base de Datos y Servidor
+
+| Tecnología | Versión |
 |---|---|
-| **Lenguaje** | Java 8+ |
-| **Framework web** | JSF 2.2 |
-| **Componentes UI** | PrimeFaces 6.0 |
-| **ORM** | Hibernate 4.3.x |
-| **Seguridad** | BCrypt (hashing de contraseñas) |
-| **Pool de conexiones** | C3P0 |
-| **Base de datos** | MySQL 5.7+ |
-| **Servidor de aplicaciones** | GlassFish 4.1.1 |
-| **IDE recomendado** | NetBeans 8.2 |
+| MySQL | 5.7+ |
+| GlassFish | 4.1.1 |
+| NetBeans (IDE recomendado) | 8.2 |
 
 ---
 
@@ -79,29 +97,36 @@ Construido con **Java 8 · JSF 2.2 · Hibernate 4.3 · MySQL · GlassFish**, con
 
 ## 🔑 Credenciales de Demo
 
-> ⚠️ **Solo para evaluación local.** Estas credenciales existen únicamente para que cualquiera pueda probar el sistema rápidamente. En un despliegue real, el primer paso es cambiar las contraseñas por defecto y crear usuarios reales. Las contraseñas se almacenan hasheadas con BCrypt.
+> ⚠️ **Solo para evaluación local.** Estas credenciales existen únicamente para que cualquiera pueda probar el sistema rápidamente. En un despliegue real, el primer paso es cambiar las contraseñas por defecto y crear usuarios reales. Las contraseñas se almacenan hasheadas con BCrypt en la base de datos.
 
 | Usuario | Contraseña | Rol |
 |---|---|---|
 | `admin` | `123` | Gestión completa: usuarios, áreas, inventario |
-| `visitante` | `123` | Solo visualización y registro de inventario |
+| `visitante` | `123` | Visualización y registro de inventario |
 
 ---
 
 ## 🖥️ Uso del Sistema
 
 ### Página de Login
-Acceso con validación de credenciales y redirección automática según el rol.
+Acceso con validación de credenciales y redirección automática según el rol del usuario.
 
-### Panel de Administración
+### Panel de Administración (Admin)
 - **Usuarios:** crear, editar, eliminar, cambiar contraseñas
 - **Áreas:** gestionar categorías
-- **Inventario:** control completo
+- **Inventario:** control completo (CRUD)
 
 ### Panel de Visitante
 - **Inventario:** visualizar y registrar productos
 - **Búsqueda:** filtrar por producto, fecha o área
 - **Reportes:** exportar a PDF
+
+### Funcionalidades clave
+- ✅ Búsqueda avanzada con múltiples filtros combinables
+- ✅ Cálculos automáticos de totales por valor y peso
+- ✅ Exportación a PDF de reportes filtrados
+- ✅ Interfaz responsive con PrimeFaces
+- ✅ Gestión de sesiones con timeout de seguridad
 
 ---
 
@@ -128,39 +153,33 @@ inventario/
 
 ---
 
-## 🔄 Evolución del proyecto
+## 🚀 Roadmap
 
-Este repositorio contiene la **primera generación** del sistema. Posteriormente diseñé una segunda generación con mejoras significativas basadas en años de uso real:
+Funcionalidades en consideración para futuras versiones:
 
-- ✅ Roles más granulares (admin, proveedores con vista limitada a sus productos, áreas/rooms con vista limitada a su sección)
-- ✅ **Sistema de semáforo de stock** (crítico / bajo / OK) con umbrales configurables y reglas distintas según el tipo de área
-- ✅ **Versionado de datos por fecha**: editar con una fecha nueva crea una versión histórica, no sobrescribe
-- ✅ **Auditoría completa** con razón obligatoria para cada cambio
-- ✅ **Filtros temporales** por semana, mes y día específico
-- ✅ Dashboard con gráficos interactivos
-- ✅ Notificaciones automáticas de stock bajo
-- ✅ Historial completo de movimientos
-- ✅ Interfaz bilingüe (español / inglés)
-
-Puedes leer más detalles de la evolución en el [caso de estudio](CASE_STUDY_ES.md).
+- Dashboard con gráficos interactivos
+- Notificaciones automáticas de stock bajo
+- Historial detallado de movimientos de inventario
+- API REST para integración con otros sistemas
+- Backup automático de datos
 
 ---
 
 ## 📚 Documentación
 
-- **[Caso de estudio (Español)](CASE_STUDY_ES.md)** — Contexto, problema, decisiones técnicas, resultados y aprendizajes
-- **[Case Study (English)](CASE_STUDY_EN.md)** — Same content, in English
+- **[Caso de estudio (Español)](https://github.com/hunterosmo/inventario/blob/main/CASE_STUDY%20Espanol.md)** — Contexto, problema, decisiones técnicas, resultados y aprendizajes
+- **[Case Study (English)](https://github.com/hunterosmo/inventario/blob/main/CASE_STUDY_Ingles.md)** — Same content, in English
 
 ---
 
 ## 👤 Autor
 
 **Joel** — Ingeniero en Sistemas
-Sistema diseñado y construido como parte de la experiencia profesional en gestión de inventarios para una distribuidora en USA.
+Sistema diseñado, construido y mantenido durante 3+ años para una distribuidora en USA.
 Si quieres una demo en vivo o conversar sobre las decisiones técnicas detrás del proyecto, contáctame por LinkedIn.
 
 ---
 
 ## 📝 Licencia
 
-Proyecto de portfolio profesional. Ver detalles en el caso de estudio.
+Proyecto de portfolio profesional.
