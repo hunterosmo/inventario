@@ -3,7 +3,7 @@
 Sistema web de gestión de inventario con roles, búsqueda avanzada y reportes en PDF.
 Construido con **Java 8 · JSF 2.2 · Hibernate 4.3 · MySQL · GlassFish**, con más de 3 años de iteración basada en uso real.
 
-> 📖 **Lee el caso de estudio completo:** [Español](CASE_STUDY_Espanol.md) · [English](CASE_STUDY_Ingles.md)
+> 📖 **Lee el caso de estudio completo:** [Español](https://github.com/hunterosmo/inventario/blob/main/CASE_STUDY%20Espanol.md) · [English]([CASE_STUDY_Ingles.md](https://github.com/hunterosmo/inventario/blob/main/CASE_STUDY_Ingles.md))
 > Contiene el contexto del problema, las decisiones técnicas y las lecciones aprendidas.
 
 ---
