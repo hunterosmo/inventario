@@ -1,17 +1,17 @@
 # Caso de Estudio: Sistema de Gestión de Inventario
 
 > **Documento de portfolio profesional**
-> Este caso de estudio describe el contexto, decisiones técnicas y aprendizajes detrás del sistema disponible en este repositorio. Los nombres específicos de la empresa, productos y proveedores han sido anonimizados; la arquitectura y decisiones técnicas son reales.
+> Este caso de estudio describe el contexto, decisiones técnicas y aprendizajes detrás del sistema disponible en este repositorio. Los nombres específicos de la empresa, productos y categorías han sido anonimizados; la arquitectura y decisiones técnicas son reales.
 
 ---
 
 ## Resumen ejecutivo
 
-Diseñé y construí un sistema web de gestión de inventario para una **distribuidora de productos de consumo** (con presencia en Estados Unidos). El sistema reemplazó procesos manuales basados en papel y hojas de cálculo informales por una aplicación centralizada con roles de usuario, control de stock por áreas, búsqueda avanzada y exportación de reportes.
+Diseñé y construí un sistema web de gestión de inventario para una **distribuidora de productos de consumo** en Estados Unidos. El sistema reemplazó procesos manuales basados en papel y hojas de cálculo informales por una aplicación centralizada con roles de usuario, control de stock por áreas, búsqueda avanzada y exportación de reportes.
 
 **Stack técnico:** Java 8, JSF 2.2, Hibernate 4.3, PrimeFaces 6.0, MySQL, GlassFish 4.1.1.
 
-**Mi rol:** Único desarrollador del sistema. Análisis de requisitos, diseño de base de datos, arquitectura, implementación, despliegue.
+**Mi rol:** Único desarrollador del sistema. Análisis de requisitos, diseño de base de datos, arquitectura, implementación, despliegue y mantenimiento durante 3+ años.
 
 ---
 
@@ -36,7 +36,7 @@ Estos cambios físicos fueron prerrequisito para que el sistema digital funciona
 
 ## El proceso
 
-### Análisis y diseño (semanas 1-3)
+### Análisis y diseño
 
 Antes de escribir código entrevisté a las personas que iban a usar el sistema: quien hace los conteos, quien ingresa datos, quien revisa reportes, quien decide compras. De ahí salieron los requisitos reales:
 
@@ -62,7 +62,7 @@ En ese momento estaba terminando mi carrera de Ingeniería en Sistemas y JSF/Hib
 Tres entidades principales:
 
 - **`Usuarios`** — autenticación, datos de contacto, rol (`admin` / `visitante`)
-- **`Area`** — categorías funcionales (abarrote, detergentes, líquidos, etc.)
+- **`Area`** — categorías funcionales
 - **`Inventarios`** — el registro central, con fecha, producto, área, cantidad, peso, precio, y referencia al usuario que lo registró
 
 Las foreign keys de `Inventarios` apuntan a `Area` y `Usuarios`, lo que me permite tener trazabilidad: quién registró qué y en qué área. Cada registro de inventario tiene su propia fecha, lo que permite reconstruir la historia.
@@ -101,20 +101,6 @@ El sistema no se construyó de una sola vez. Empezó como un MVP simple (CRUD de
 
 ---
 
-## Estado actual y próximos pasos
-
-Este sistema (Java/JSF) fue la primera versión. Posteriormente diseñé una **segunda generación** con mejoras significativas:
-
-- Roles más granulares (admin, proveedores con vista limitada a sus productos, áreas/rooms con vista limitada a su sección)
-- Sistema de semáforo de stock (crítico / bajo / OK) con umbrales configurables y reglas distintas por tipo de área (almacenamiento por cantidad + peso, salas de procesamiento por peso solamente)
-- Versionado de datos por fecha: una edición con fecha nueva crea una nueva versión histórica, no sobrescribe
-- Auditoría completa con razón obligatoria para cada cambio
-- Filtros temporales por semana, mes, día específico
-
-Esa segunda iteración está documentada en otro repositorio.
-
----
-
 ## Metodología y herramientas
 
 Quiero ser transparente sobre cómo trabajé en este proyecto, porque creo que es relevante para entender qué fue mi aporte real:
@@ -142,3 +128,4 @@ Si tienes interés en este proyecto y quieres ver una demo en vivo o revisar el 
 | IDE | NetBeans | 8.2 |
 
 ---
+
